@@ -38,9 +38,7 @@ console.log("Listening on port " + PORT);
 
       var clients = {};
 
-      server.get("/", function(req, res){
-    res.send("It works!");
-});
+
 
       io.sockets.on('connection', function (socket) {
 
