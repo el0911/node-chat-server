@@ -38,18 +38,9 @@ console.log("Listening on port " + PORT);
 
       var clients = {};
 
-      function handler (req, res) {
-        fs.readFile(__dirname + '/index.html',
-        function (err, data) {
-          if (err) {
-            res.writeHead(500);
-            return res.end('Error loading index.html');
-          }
-
-          res.writeHead(200);
-          res.end(data);
-        });
-      }
+      server.get("/", function(req, res){
+    res.send("It works!");
+});
 
       io.sockets.on('connection', function (socket) {
 
