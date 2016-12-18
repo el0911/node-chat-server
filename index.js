@@ -58,6 +58,8 @@ console.log("Listening on port " + PORT);
           console.log("Sending: " + data.message + " to " + data.receiver);
           if (clients[data.receiver]){
             io.sockets.connected[clients[data.receiver].socket].emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
+            io.sockets.connected[clients[data.receiver].socket].emit("refresh", {message:data.message,senderid:data.senderid,sendername:data.sendername});
+            io.sockets.connected[clients[data.receiver].socket].emit("refresh1", {message:data.message,senderid:data.senderid,sendername:data.sendername});
               // mysql_(data,1);
           } else {
             console.log("User not logged in: " + data.receiver);
