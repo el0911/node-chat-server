@@ -15,6 +15,7 @@
     "cors":"latest",
     "socket.io":"latest",
     "mysql":"latest",
+    "fcm-push":"latest",
       "mongodb":"latest",
         "assert":"latest"
   },
