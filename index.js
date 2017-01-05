@@ -67,34 +67,34 @@ console.log("Listening on port " + PORT);
       io.sockets.on('connection', function (socket) {
 
         socket.on('user', function(data){
-        console.log("connected "+data.name);
-          console.log(data);
-          ///search if their is a user like him or her
-          // MongoClient.connect(url, function(err, db) {
-          //   assert.equal(null, err);
-          //   console.log("Connected correctly to server");
-          //
-          //   authuser(db,data.id, function(x,y) {/////y is the data am user looking for
-          //     console.log(x);
-          //     if(x.length<1){
-          //       console.log("add");
-          //       insertuser(db,y,function(){
-          //           db.close();
-          //       })
-          //     }
-          //     else {
-          //       console.log("update");
-          //       updateuser(db,data,function(){
-          //         db.close()
-          //       });
-          //     }
-          //
-          // });
-          //
-          // });
           clients[data.id] = {
             "socket": socket.id
           };
+
+        console.log("connected "+data.name);
+          ///search if their is a user like him or her
+          MongoClient.connect(url, function(err, db) {
+            assert.equal(null, err);
+            console.log("Connected correctly to server");
+
+            authuser(db,data.id, function(x,y) {/////y is the data am user looking for
+              console.log(x);
+              if(x.length<1){
+                console.log("add");
+                insertuser(db,y,function(){
+                    db.close();
+                })
+              }
+              else {
+                console.log("update");
+                updateuser(db,data,function(){
+                  db.close()
+                });
+              }
+
+          });
+
+          });
 
           console.log(clients);
           console.log("updating");
@@ -115,18 +115,18 @@ console.log("Listening on port " + PORT);
             io.sockets.connected[clients[data.receiver].socket].emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh",{data:"refresh"});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh1", {data:"refresh"});
-          //   MongoClient.connect(url, function(err, db) {
-          //   assert.equal(null, err);
-          //   console.log("Connected successfully to server");
-          //
-          //   authuser(db,data.receiver,function(x,y){
-          //     if(x.length>0){
-          //       send(x[0],data);///send the first shit
-          //     }
-          //   });
-          //
-          // });
-          // io.sockets.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
+            MongoClient.connect(url, function(err, db) {
+            assert.equal(null, err);
+            console.log("Connected successfully to server");
+
+            authuser(db,data.receiver,function(x,y){
+              if(x.length>0){
+                send(x[0],data);///send the first shit
+              }
+            });
+
+          });
+          io.sockets.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
 
               // mysql_(data,1);
           } else {
@@ -134,17 +134,17 @@ console.log("Listening on port " + PORT);
             console.log("saving messages to db");
             // mysql_(data,0);
             ///push notification
-          //   MongoClient.connect(url, function(err, db) {
-          //   assert.equal(null, err);
-          //   console.log("Connected successfully to server");
-          //
-          //   authuser(db,data.receiver,function(x,y){
-          //     if(x.length>0){
-          //       send(x[0],data);///send the first shit
-          //     }
-          //   });
-          //
-          // });
+            MongoClient.connect(url, function(err, db) {
+            assert.equal(null, err);
+            console.log("Connected successfully to server");
+
+            authuser(db,data.receiver,function(x,y){
+              if(x.length>0){
+                send(x[0],data);///send the first shit
+              }
+            });
+
+          });
           }
         });
 
