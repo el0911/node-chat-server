@@ -126,7 +126,9 @@ console.log("Listening on port " + PORT);
             });
 
           });
-          io.sockets.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
+          console.log("socks");
+          console.log(clients[data.receiver].socket);
+          io.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
 
               // mysql_(data,1);
           } else {
