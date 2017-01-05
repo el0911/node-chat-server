@@ -7,8 +7,6 @@ var express = require('express');
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
 
-var FCM = require('fcm-push');
-
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 // var url = 'mongodb://127.0.0.1:27017/nemo';
