@@ -215,8 +215,7 @@ console.log("Listening on port " + PORT);
         var message = {
           to:x.push, // required fill with device token or topics
           // collapse_key: 'your_collapse_key',
-          data:
-          {message:y.message,senderid:y.senderid,sendername:y.sendername},    // your_custom_data_key: 'your_custom_data_value',
+          data:{message:y.message,senderid:y.senderid,sendername:y.sendername,test:1234},    // your_custom_data_key: 'your_custom_data_value',
           notification: {
               title: 'message from '+y.sendername,
               body: y.message+' '
