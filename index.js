@@ -40,12 +40,12 @@ var connection_ = mysql.createConnection({
   database : 'chat_db'
 });
 
-// connection_.connect();
-// testing
-// MongoClient.connect(url, function(err, db) {
-//   assert.equal(null, err);
-//   console.log("Connected correctly to server");
-//   });
+connection_.connect();
+testing
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+  });
 
 
 console.log("Listening on port " + PORT);
