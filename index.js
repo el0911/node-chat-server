@@ -120,6 +120,7 @@ console.log("Listening on port " + PORT);
             console.log("Connected successfully to server");
 
             authuser(db,data.receiver,function(x,y){
+                db.close();
               if(x.length>0){
                 send(x[0],data);///send the first shit
               }
@@ -128,7 +129,7 @@ console.log("Listening on port " + PORT);
           });
           console.log("socks");
           console.log(clients[data.receiver].socket);
-          io.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
+          // io.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
 
               // mysql_(data,1);
           } else {
@@ -141,6 +142,7 @@ console.log("Listening on port " + PORT);
             console.log("Connected successfully to server");
 
             authuser(db,data.receiver,function(x,y){
+                db.close();
               if(x.length>0){
                 send(x[0],data);///send the first shit
               }
