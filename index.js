@@ -42,15 +42,15 @@ console.log("Listening on port " + PORT);
 
       io.sockets.on('connection', function (socket) {
 
-        socket.on('update', function(data){
-            MongoClient.connect(url, function(err, db){
-              var collection = db.collection('documents');
-              collection.find({receiver:x,status:1}).toArray(function(err, docs) {
-                send2(docs);
-                db.close();
-              });
-            };
-      });
+      //   socket.on('update', function(data){
+      //       MongoClient.connect(url, function(err, db){
+      //         var collection = db.collection('documents');
+      //         collection.find({receiver:x,status:1}).toArray(function(err, docs) {
+      //           send2(docs);
+      //           db.close();
+      //         });
+      //       };
+      // });
 
         socket.on('user', function(data){
           clients[data.id] = {
