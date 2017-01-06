@@ -251,7 +251,8 @@ console.log("Listening on port " + PORT);
         insertmessage(db,message,function(x){
             db.close();
       });
-      }
+    }
+  }
 
 
 
