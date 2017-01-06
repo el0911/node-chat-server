@@ -272,7 +272,7 @@ console.log("Listening on port " + PORT);
               body: ''
           }
       };
-
+    console.log(message);
       //callback style
       fcm.send(message)
           .then(function(response){
