@@ -82,9 +82,9 @@ console.log("Listening on port " + PORT);
 
           });
 
-          console.log(clients);
-          console.log("updating");
-          update_(data.id);
+          // console.log(clients);
+          // console.log("updating");
+          // update_(data.id);
         });
 
 
