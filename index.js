@@ -33,38 +33,24 @@ clients[req.params.userId].push=req.params.pushid;////just replace it if it was 
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const io = socketIO(server);
-var connection_ = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'chat_db'
-});
-
-// connection_.connect();
-// testing
-// MongoClient.connect(url, function(err, db) {
-//   assert.equal(null, err);
-//   console.log("Connected correctly to server");
-//   });
-
 
 console.log("Listening on port " + PORT);
-
-
-///api routes
-
-//f it not doing this part ever
-
-// app.get("/index", function(req, res){
-//     res.json({name:"It works!"});
-//     console.log("sending api");
-// });
 
       var clients = {};
 
 
 
       io.sockets.on('connection', function (socket) {
+
+        socket.on('update', function(data){
+            MongoClient.connect(url, function(err, db){
+              var collection = db.collection('documents');
+              collection.find({id:x,status:0}).toArray(function(err, docs) {
+                send2(docs);
+                db.close();
+              });
+            };
+      });
 
         socket.on('user', function(data){
           clients[data.id] = {
@@ -111,7 +97,12 @@ console.log("Listening on port " + PORT);
           console.log("data");
           console.log(data);
           console.log("Sending: " + data.message + " to " + data.receiver);
-          if (clients[data.receiver]){
+          var mes={
+            message:data.message,
+            senderid:data.senderid,
+            sendername:data.sendername
+          };
+        if (clients[data.receiver]){
             io.sockets.connected[clients[data.receiver].socket].emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh",{data:"refresh"});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh1", {data:"refresh"});
@@ -125,17 +116,15 @@ console.log("Listening on port " + PORT);
                 send(x[0],data);///send the first shit
               }
             });
-
-          });
+            savemessagetodb(mes,1);
+            });
           console.log("socks");
           console.log(clients[data.receiver].socket);
-          // io.emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
 
-              // mysql_(data,1);
-          } else {
+              } else {
+              savemessagetodb(mes,0);
             console.log("User not logged in: " + data.receiver);
             console.log("saving messages to db");
-            // mysql_(data,0);
             ///push notification
             MongoClient.connect(url, function(err, db) {
             assert.equal(null, err);
@@ -177,39 +166,6 @@ console.log("Listening on port " + PORT);
         return d;
       }
 
-      function mysql_(data,status){
-        // data=12;
-        console.log(data);
-        connection_.query("INSERT INTO `messages`( `sendername`, `receiver`, `message`, `senderid`, `status`) VALUES ('"+data.sendername+"','"+data.receiver+"','"+data.message+"','"+data.senderid+"','"+status+"')",function(err, rows, fields) {
-
-      if (err) throw err;
-      console.log("SAVING MESSAGE FROM "   +data.senderid);
-      // console.log('The solution is: ', rows[0].id);
-      });
-      }
-
-      function update_(x){
-      var d= {};
-
-      connection_.query("SELECT * FROM `messages` WHERE `receiver` = "+x+" AND `status` = 0",function(err, rows, fields) {
-        console.log("updating messages of  "   +x);
-        io.sockets.connected[clients[x].socket].emit("update",rows);
-  });
-
-
-
-  /////set messages to seen
-  connection_.query("UPDATE * `messages` SET `status` = 1 WHERE  `receiver` = "+x+" AND `status` = 0",function(err, rows, fields) {
-    console.log("seen messages of  "   +x);
-    });
-
-
-      console.log(this.d);
-      //  return d[0];
-      }
-
-
-
 
       function send(x,y){
         var message = {
@@ -235,19 +191,23 @@ console.log("Listening on port " + PORT);
 
 
       var insertuser = function(db,y ,callback) {
-        // Get the documents collection
         var collection = db.collection('documents');
-        // Insert some documents
         collection.insertMany([
         y
         ], function(err, result) {
-          // assert.equal(err, null);
-          // assert.equal(1, result.result.n);
-          // assert.equal(1, result.ops.length);
-          console.log("Inserted 3 documents into the collection");
-          callback(result);
+        callback(result);
         });
       }
+
+      var insertmessage = function(db,y ,callback) {
+        var collection = db.collection('messages');
+        collection.insertMany([
+        y
+        ], function(err, result) {
+        callback(result);
+        });
+      }
+
 
       var authuser = function(db,x,callback) {
         // Get the documents collection
@@ -276,13 +236,46 @@ console.log("Listening on port " + PORT);
 
 
       var removeDocument = function(db, callback) {
-        // Get the documents collection
         var collection = db.collection('documents');
-        // Insert some documents
         collection.deleteOne({ a : 3 }, function(err, result) {
-          // assert.equal(err, null);
-          // assert.equal(1, result.result.n);
           console.log("Removed the document with the field a equal to 3");
           callback(result);
         });
+      }
+
+      function savemessagetodb(message,status){
+        message.status=status;////1 sent 0 not sent
+        MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        insertmessage(db,message,function(x){
+            db.close();
+      });
+      }
+
+
+
+      function send2(x,y){///here i push multiple items to it
+        var message = {
+          to:x.push, // required fill with device token or topics
+          // collapse_key: 'your_collapse_key',
+          data:{
+                  multiple:true,
+                  payload_:y
+                },    // your_custom_data_key: 'your_custom_data_value',
+          notification: {
+              title: 'You have some messages',
+              body: ''
+          }
+      };
+
+      //callback style
+      fcm.send(message)
+          .then(function(response){
+              console.log("Successfully sent with response: ", response);
+          })
+          .catch(function(err){
+              console.log("Something has gone wrong!");
+              console.error(err);
+          })
       }
