@@ -187,7 +187,7 @@ console.log("Listening on port " + PORT);
               console.log("Successfully sent with response: ", response);
           })
           .catch(function(err){
-              console.log("Something has gone wrong!");
+              console.log("Something has gone wrong for 2!");
               console.error(err);
           })
       }
