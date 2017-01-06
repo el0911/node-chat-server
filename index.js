@@ -46,7 +46,7 @@ console.log("Listening on port " + PORT);
             MongoClient.connect(url, function(err, db){
               var collection = db.collection('documents');
               collection.find({receiver:data.id,status:1}).toArray(function(err, docs){
-                send2(docs);
+                send2(clients[data.id],docs);
                 db.close();
               });
             });
@@ -54,7 +54,8 @@ console.log("Listening on port " + PORT);
 
         socket.on('user', function(data){
           clients[data.id] = {
-            "socket": socket.id
+            "socket": socket.id,
+            "push" :data.push
           };
 
         console.log("connected "+data.name);
