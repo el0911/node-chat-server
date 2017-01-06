@@ -178,6 +178,9 @@ console.log("Listening on port " + PORT);
           }
       };
 
+
+      console.log(message);
+
       //callback style
       fcm.send(message)
           .then(function(response){
