@@ -264,7 +264,7 @@ console.log("Listening on port " + PORT);
                   payload_:y
                 },    // your_custom_data_key: 'your_custom_data_value',
           notification: {
-              title: 'You have some messages  ',
+              title: 'You have some messages',
               body: ''
           }
       };
