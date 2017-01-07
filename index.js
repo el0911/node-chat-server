@@ -60,7 +60,8 @@ console.log("Listening on port " + PORT);
         socket.on('user', function(data){
           clients[data.id] = {
             "socket": socket.id,
-            "push" :data.push
+            "push" :data.push,
+            "logged":1 ////1 means yes 0 means no
           };
 
         console.log("connected "+data.name);
@@ -108,7 +109,7 @@ console.log("Listening on port " + PORT);
             senderid:data.senderid,
             sendername:data.sendername
           };
-        if (clients[data.receiver]){
+        if (clients[data.receiver].logged===1){
             io.sockets.connected[clients[data.receiver].socket].emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh",{data:"refresh"});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh1", {data:"refresh"});
@@ -153,7 +154,8 @@ console.log("Listening on port " + PORT);
         		if(clients[name].socket === socket.id) {
               console.log("deleted");
               console.log(clients[name]);
-        			delete clients[name];
+        			// delete clients[name];
+              clients[name].logged=0;
         			break;
         		}
         	}
@@ -285,7 +287,7 @@ console.log("Listening on port " + PORT);
               console.log("Successfully sent with response: ", response);
           })
           .catch(function(err){
-              console.log("Something has gone wrong!",message);
+              console.log("Something has gone wrong!",y);
               console.error(err);
           })
       }
