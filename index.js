@@ -273,7 +273,7 @@ console.log("Listening on port " + PORT);
       }
 
       function savemessagetodb(message,status,receiverid){
-        message.receiver=receiverid;
+        message.receiver=receiverid+"";//turn it to a string
         message.status=status;////1 sent 0 not sent
         MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
