@@ -318,7 +318,7 @@ console.log("Listening on port " + PORT);
         // Get the documents collection
         var collection = db.collection('messages');
         // Update document where a is 2, set b equal to 1
-        collection.updateOne({ id : x.id+"" }
+        collection.updateOne({ id : x.id}
           , { $set: { status:1 } }, function(err, result) {
         });
       }
