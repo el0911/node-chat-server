@@ -45,7 +45,7 @@ console.log("Listening on port " + PORT);
         socket.on('update', function(data){
             MongoClient.connect(url, function(err, db){
               var collection = db.collection('messages');
-              collection.find({receiver:data.id,status:1}).toArray(function(err, docs){
+              collection.find({status:1}).toArray(function(err, docs){
                 if (clients[data.id]) {
                   send2(clients[data.id],docs);
                 }
