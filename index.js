@@ -109,7 +109,8 @@ console.log("Listening on port " + PORT);
             senderid:data.senderid,
             sendername:data.sendername
           };
-        if (clients[data.receiver].logged===1){
+        if (clients[data.receiver]){
+          if (clients[data.receiver].logged===1){
             io.sockets.connected[clients[data.receiver].socket].emit("chat", {message:data.message,senderid:data.senderid,sendername:data.sendername});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh",{data:"refresh"});
             io.sockets.connected[clients[data.receiver].socket].emit("refresh1", {data:"refresh"});
@@ -127,7 +128,24 @@ console.log("Listening on port " + PORT);
             });
           console.log("socks");
           console.log(clients[data.receiver].socket);
+        }else{
+          savemessagetodb(mes,0,data.receiver);
+        console.log("User not logged in: " + data.receiver);
+        console.log("saving messages to db");
+        ///push notification
+        MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server3");
 
+        authuser(db,data.receiver,function(x,y){
+            db.close();
+          if(x.length>0){
+            send(x[0],data);///send the first shit
+          }
+        });
+
+      });
+        }
               } else {
               savemessagetodb(mes,0,data.receiver);
             console.log("User not logged in: " + data.receiver);
