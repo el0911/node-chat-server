@@ -314,9 +314,11 @@ console.log("Listening on port " + PORT);
 
 
 
-      function updatetoseen(db,x){
+      function updatetoseen(db,x) {
+        // Get the documents collection
         var collection = db.collection('messages');
-        collection.updateOne({ id : x.id }
-           { $set: { status:1 } }, function(err, result) {
-            });
+        // Update document where a is 2, set b equal to 1
+        collection.updateOne({ id : x.id+"" }
+          , { $set: { status:1 } }, function(err, result) {
+        });
       }
