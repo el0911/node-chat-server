@@ -123,13 +123,13 @@ console.log("Listening on port " + PORT);
                 send(x[0],data);///send the first shit
               }
             });
-            savemessagetodb(mes,1);
+            savemessagetodb(mes,1,data.receiver);
             });
           console.log("socks");
           console.log(clients[data.receiver].socket);
 
               } else {
-              savemessagetodb(mes,0);
+              savemessagetodb(mes,0,data.receiver);
             console.log("User not logged in: " + data.receiver);
             console.log("saving messages to db");
             ///push notification
@@ -254,7 +254,8 @@ console.log("Listening on port " + PORT);
         });
       }
 
-      function savemessagetodb(message,status){
+      function savemessagetodb(message,status,receiverid){
+        message.receiver=receiverid;
         message.status=status;////1 sent 0 not sent
         MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
