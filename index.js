@@ -317,7 +317,6 @@ console.log("Listening on port " + PORT);
       function updatetoseen(db,x){
         var collection = db.collection('messages');
         collection.updateOne({ id : x.id }
-          , { $set: { status:1 } }, function(err, result) {
-            callback(result);
-        });
+           { $set: { status:1 } }, function(err, result) {
+            });
       }
