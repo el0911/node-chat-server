@@ -180,7 +180,7 @@ console.log("Listening on port " + PORT);
           data:{message:y.message,senderid:y.senderid,sendername:y.sendername,test:1234},    // your_custom_data_key: 'your_custom_data_value',
           notification: {
               title: 'message from '+y.sendername,
-              body: y.message+' '
+              body: y.message+'.'
           }
       };
 
