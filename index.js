@@ -48,6 +48,7 @@ console.log("Listening on port " + PORT);
               collection.find({receiver:data.id,status:0}).toArray(function(err, docs){
                 if (clients[data.id]) {
                   send2(clients[data.id],docs);
+                  updatetoseen(db,data);
                 }
                 else{
                   console.log("where  done");
@@ -309,4 +310,15 @@ console.log("Listening on port " + PORT);
               console.log("Something has gone wrong!",y);
               console.error(err);
           })
+      }
+
+
+
+      function updatetoseen(db,x){
+        var collection = db.collection('messages');
+        collection.updateOne({ id : x.id }
+          , { $set: { status:1 } }, function(err, result) {
+            callback(result);
+        });
+      }
       }
