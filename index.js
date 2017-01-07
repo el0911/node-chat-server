@@ -135,7 +135,7 @@ console.log("Listening on port " + PORT);
             ///push notification
             MongoClient.connect(url, function(err, db) {
             assert.equal(null, err);
-            console.log("Connected successfully to server");
+            console.log("Connected successfully to server3");
 
             authuser(db,data.receiver,function(x,y){
                 db.close();
