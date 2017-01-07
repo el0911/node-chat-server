@@ -50,7 +50,7 @@ console.log("Listening on port " + PORT);
                   send2(clients[data.id],docs);
                 }
                 else{
-                  console.log("where  done for");
+                  console.log("where  done");
                 }
                 db.close();
               });
