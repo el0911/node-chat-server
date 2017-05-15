@@ -12,9 +12,9 @@ var FCM = require('fcm-push');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 // var url = 'mongodb://127.0.0.1:27017/nemo';
-var url = 'mongodb://nemo:nemo@ds145868.mlab.com:45868/nemo_1';
+var url = '';
 
-var serverKey = 'AAAAHx_cRY4:APA91bF7YkfrOYdlLxfdqkXQYuPHbPIl9atoIUQiADJerkFTeyh0bvy8Rle5MiI_hH4b6AG3ukLillmqqhWIxZETw-BYib7UlSONeO5C-39PFrVWrBkI-huFMFGisZnAQZT2xfjzxC8eo5ankUDEj2ac4wHC6QYaYQ';
+var serverKey = '';
 var fcm = new FCM(serverKey);
 var mysql      = require('mysql');
 var d=1;
